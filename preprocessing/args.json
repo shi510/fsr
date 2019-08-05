@@ -1,0 +1,15 @@
+{
+    "files" : [
+        "Your meteorological csv data file list.txt",
+        "Your meteorological csv data file list.txt"
+    ],
+    "interestings":{
+        "일시": "convert.cvt_date",
+        "기온(°C)": "convert.cvt_temperature",
+        "풍속(m/s)": "convert.cvt_wind_speed",
+        "습도(%)": "convert.cvt_relative_humidity",
+        "전운량(10분위)": "convert.cvt_cloud_cover",
+        "일사(MJ/m2)": "convert.cvt_radiation"
+    },
+    "past_hour": 2
+}
