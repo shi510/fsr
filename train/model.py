@@ -1,15 +1,15 @@
 import tensorflow as tf
 import tensorflow.keras.layers as layers
 
-def model1(shape):
-    input = tf.keras.Input(shape)
+def model1(num_features):
+    input = tf.keras.Input([num_features])
     output = layers.Dense(256, layers.LeakyReLU())(input)
     output = layers.Dense(64, layers.LeakyReLU())(output)
     output = layers.Dense(1)(output)
     return tf.keras.Model(input, output)
 
-def model2(shape):
-    input = tf.keras.Input(shape)
+def model2(num_features):
+    input = tf.keras.Input([num_features])
     output = _dense_bn_act(input, 256, layers.LeakyReLU())
     output = _dense_bn_act(output, 64, layers.LeakyReLU())
     output = layers.Dense(1)(output)
@@ -21,9 +21,10 @@ def _dense_bn_act(input, units, act):
     output = act(output)
     return output
 
-def model3(shape):
-    input = tf.keras.Input(shape + [1])
-    output = _inception(input, 10)
+def model3(num_features):
+    input = tf.keras.Input((num_features))
+    output = layers.Reshape((num_features, 1))(input)
+    output = _inception(output, 10)
     output = _res_inception(output, 10)
     output = _res_inception(output, 10)
     output = layers.Flatten()(output)
