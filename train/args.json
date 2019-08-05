@@ -1,0 +1,10 @@
+{
+    "batch_size" : 128,
+    "model" : "model.model3",
+    "loss" : "mse",
+    "optimizer" : "adam",
+    "epoch" : 20,
+    "learning_rate" : 1e-4,
+    "train_list" : "Your Preprocessed train data list.txt",
+    "test_list" : "Your Preprocessed test data list.txt"
+}
