@@ -61,8 +61,6 @@ def convert_csv2dict_list(csv_list, interestings):
 def make_past_pair(dict_list, past_hour, past_pair):
     x = []
     y = []
-    start = past_hour
-    end = len(dict_list) - past_hour
     input_list = past_pair['input']
     output = past_pair['output']
     for n in range(past_hour, len(dict_list)):
