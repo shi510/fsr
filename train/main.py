@@ -27,8 +27,6 @@ if __name__ == '__main__':
     model = tutil.get_model(args['model'])
     model = model(train_ds.features())
     loss = tf.keras.losses.MeanSquaredError()
-
-    writer = tf.summary.create_file_writer('logs')
     opt = tf.keras.optimizers.Adam(learning_rate=1e-4)
 
     model.compile(opt, loss)
