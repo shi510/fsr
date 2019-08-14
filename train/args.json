@@ -1,6 +1,6 @@
 {
     "batch_size" : 128,
-    "model" : "model.model3",
+    "model" : "model3",
     "loss" : "mse",
     "optimizer" : "adam",
     "epoch" : 20,
