@@ -1,4 +1,6 @@
 import importlib
+import os
+from pathlib import Path
 import common.util as cutil
 
 def get_model(model_type):
@@ -16,3 +18,7 @@ def read_train_data(file_name):
                 sub.append(float(elem))
             train_data.append(sub)
     return train_data
+
+def make_dir(path):
+    dir = Path(path)
+    dir.mkdir(parents=True, exist_ok=True)
