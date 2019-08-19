@@ -9,18 +9,6 @@ import train.util as tutil
 import train.input_pipeline as input_pipeline
 import preprocessing.convert as convert
 
-class ModelCheckPoint(tf.keras.callbacks.Callback):
-    
-    def __init__(self, log_dir):
-        super(ModelCheckPoint, self).__init__()
-        self.log_root = log_dir
-
-    def on_epoch_end(self, epoch, logs=None):
-        name = 'epoch=' + str(epoch) + '_'
-        name += 'val_loss=' + format(logs['val_loss'], '.6f')
-        name += '.h5'
-        self.model.save(os.path.join(self.log_root, name))
-
 def find_best_model(**kwargs):
     epoch = kwargs['epoch']
     batches = kwargs['batch_sizes']
@@ -49,7 +37,7 @@ def find_best_model(**kwargs):
     best_loss = 1e+4
     history_collection = []
     
-    for k, model_name in enumerate(models):
+    for model_name in models:
         plt.clf()
         plt.figure(figsize=(12, 6))
         plt.subplot(1, 2, 1)
@@ -87,6 +75,10 @@ def find_best_model(**kwargs):
                 tf.keras.optimizers.Adam(learning_rate=lr),
                 tf.keras.losses.MeanSquaredError()
             )
+            early_stop = tf.keras.callbacks.EarlyStopping(
+                patience=10,
+                restore_best_weights=True
+            )
             print('Try hyper-parameter : ' + cur_setting)
             history = model.fit(
                 x=train_ds(),
@@ -94,9 +86,11 @@ def find_best_model(**kwargs):
                 epochs=epoch,
                 steps_per_epoch=int(math.floor(len(train_ds) / batch_size)),
                 validation_steps=int(math.floor(len(test_ds) / batch_size)),
-                callbacks=[ModelCheckPoint(dir_name)]
+                callbacks=[early_stop]
             )
-            cur_loss = history.history['val_loss'][-1]
+            cur_loss = early_stop.best
+            file_name = 'best_model' + '_loss=' + format(cur_loss, '.6f') + '.h5'
+            model.save(os.path.join(dir_name, file_name))
             
             if best_loss > cur_loss:
                 best_model_param['model'] = model_name
