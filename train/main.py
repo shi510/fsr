@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import common.util as cutil
 import train.util as tutil
-import input_pipeline
+import train.solver
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config_file')
@@ -14,26 +14,21 @@ if __name__ == '__main__':
     args = parser.parse_args()
     args = cutil.open_config_file(args.config_file)
 
-    train_ds = input_pipeline.Dataset(
-        args['train_list'],
-        args['batch_size']
+    best_model = train.solver.find_best_model(
+        batch_sizes=args['batch_sizes'],
+        models=args['models'],
+        optimizers=['adam'],
+        init_learning_rates=[1e-4],
+        epoch=args['epoch'],
+        interestings=args['interestings'],
+        output=args['output'],
+        past_hours=args['past_hours'],
+        ablation_report=True,
+        train_list=args['train_list'],
+        test_list=args['test_list'],
+        log_dir='logs'
     )
 
-    test_ds = input_pipeline.Dataset(
-        args['test_list'],
-        args['batch_size']
-    )
-
-    model = tutil.get_model(args['model'])
-    model = model(train_ds.features())
-    loss = tf.keras.losses.MeanSquaredError()
-    opt = tf.keras.optimizers.Adam(learning_rate=1e-4)
-
-    model.compile(opt, loss)
-
-    model.fit(x = train_ds(),
-        validation_data = test_ds(),
-        epochs = args['epoch'],
-        steps_per_epoch = int(math.floor(len(train_ds) / args['batch_size'])),
-        validation_steps = int(math.floor(len(test_ds) / args['batch_size']))
-    )
+    with open('best_model.json', 'w') as f:
+        f.write(best_model.to_json())
+    best_model.save_weights('best_model_weights.h5')
