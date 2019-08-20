@@ -53,11 +53,16 @@ region1/test/2019.csv
 ## How To Train Your Forecasting Model  
 ```
 1. Clone git project from https://github.com/shi510/fsr.  
-2. Modify train/args.json file.  
+2. Change directory to fsr.  
+3. Modify train/args.json file.  
    Ex: change train_list's parameter to absolute path of your train.txt .  
 ```
 Before run the python script, you have to add fsr's absolute path to PYTHONPATH.  
-For example: in windows 10, open PowerShell and command $env:PYTHONPATH=$env:PYTHONPATH+':/path/to/fsr'  
+For example, in Windows 10:  
+```
+1. Open PowerShell in fsr folder.  
+2. Do command, $env:PYTHONPATH=$env:PYTHONPATH+':/path/to/fsr'.  
+```
 Then, train your model with below command.  
 ```
 python train/main.py --config_file='train/args.json'.  
