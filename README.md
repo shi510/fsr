@@ -35,16 +35,16 @@ fsr
   |         |-- test  
   |         |       |-- 2018.csv  
   |         |       |-- 2019.csv  
-  |         |-- train.txt  
-  |         |-- test.txt  
+  |-- region1_train.txt  
+  |-- region1_test.txt  
 ```
-The train.txt format is as below.  
+The region1_train.txt format is as below.  
 ```
 region1/train/2010.csv  
 region1/train/2011.csv  
 ...
 ```
-The test.txt format is as below.  
+The region1_test.txt format is as below.  
 ```
 region1/test/2018.csv  
 region1/test/2019.csv  
