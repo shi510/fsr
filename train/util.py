@@ -6,9 +6,9 @@ import common.util as cutil
 def get_model(model_type):
     return getattr(importlib.import_module('model'), model_type)
 
-def read_train_data(file_name):
+def read_train_data(file_name, encoding='utf-8'):
     train_data = []
-    with open(file_name, 'r') as f:
+    with open(file_name, 'r', encoding=encoding) as f:
         while True:
             line = cutil.remove_cr(f.readline())
             if line == '':

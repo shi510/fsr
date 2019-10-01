@@ -2,11 +2,11 @@
     "batch_sizes" : [64, 128, 256],
     "models" : ["model1", "model2", "model3"],
     "loss" : "mse",
-    "optimizer" : "adam",
+    "optimizers" : ["adam"],
     "epoch" : 50,
-    "learning_rate" : 1e-4,
     "train_list" : "Your Preprocessed train data list.txt",
     "test_list" : "Your Preprocessed test data list.txt",
+    "learning_rates" : [1e-3],
     "interestings":{
         "일시": "preprocessing.convert.cvt_date",
         "기온(°C)": "preprocessing.convert.cvt_temperature",
@@ -17,4 +17,5 @@
         "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
     },
     "past_hours": [1, 2, 3, 4]
+    "ablation_report": false
 }

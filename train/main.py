@@ -17,12 +17,12 @@ if __name__ == '__main__':
     best_model = train.solver.find_best_model(
         batch_sizes=args['batch_sizes'],
         models=args['models'],
-        optimizers=['adam'],
-        init_learning_rates=[1e-4],
+        optimizers=args['optimizers'],
+        init_learning_rates=args['learning_rates'],
         epoch=args['epoch'],
         interestings=args['interestings'],
         past_hours=args['past_hours'],
-        ablation_report=True,
+        ablation_report=args['ablation_report'],
         train_list=args['train_list'],
         test_list=args['test_list'],
         log_dir='logs'
