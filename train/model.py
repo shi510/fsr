@@ -6,22 +6,22 @@ def model1(num_features):
     output = layers.Dense(256)(input)
     output = layers.LeakyReLU()(output)
     output = layers.Dense(64)(output)
+    features = output
     output = layers.LeakyReLU()(output)
-    output = layers.Dense(1, activation='sigmoid')(output)
-    return tf.keras.Model(input, output)
+    output = layers.Dense(1, activation='sigmoid', name='output')(output)
+    return tf.keras.Model(input, [output, features])
 
 def model2(num_features):
     input = tf.keras.Input([num_features])
-    output = _dense_bn_act(input, 256, layers.LeakyReLU())
-    output = _dense_bn_act(output, 64, layers.LeakyReLU())
-    output = layers.Dense(1, activation='sigmoid')(output)
-    return tf.keras.Model(input, output)
-
-def _dense_bn_act(input, units, act):
-    output = layers.Dense(units, use_bias=False)(input)
+    output = layers.Dense(256)(input)
     output = layers.BatchNormalization()(output)
-    output = act(output)
-    return output
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(64)(input)
+    features = output
+    output = layers.BatchNormalization()(output)
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(1, activation='sigmoid', name='output')(output)
+    return tf.keras.Model(input, [output, features])
 
 def model3(num_features):
     input = tf.keras.Input((num_features))
@@ -34,10 +34,11 @@ def model3(num_features):
     output = layers.LeakyReLU()(output)
     output = layers.BatchNormalization()(output)
     output = layers.Dense(64)(output)
+    features = output
     output = layers.LeakyReLU()(output)
     output = layers.BatchNormalization()(output)
-    output = layers.Dense(1, activation='sigmoid')(output)
-    return tf.keras.Model(input, output)
+    output = layers.Dense(1, activation='sigmoid', name='output')(output)
+    return tf.keras.Model(input, [output, features])
 
 def _inception(x, filters):
     c3 = layers.Conv1D(filters, 3, padding='same')(x)

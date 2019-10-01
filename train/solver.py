@@ -72,7 +72,7 @@ def find_best_model(**kwargs):
             model = make_model(train_ds.features())
             model.compile(
                 tf.keras.optimizers.Adam(learning_rate=lr),
-                tf.keras.losses.MeanSquaredError()
+                loss={'output':tf.keras.losses.MeanSquaredError()}
             )
             early_stop = tf.keras.callbacks.EarlyStopping(
                 patience=10,
