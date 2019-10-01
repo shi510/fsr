@@ -40,7 +40,6 @@ def model3(num_features):
     return tf.keras.Model(input, output)
 
 def _inception(x, filters):
-    act = layers.LeakyReLU()
     c3 = layers.Conv1D(filters, 3, padding='same')(x)
     c3 = layers.BatchNormalization()(c3)
     c3 = layers.LeakyReLU()(c3)

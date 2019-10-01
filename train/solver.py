@@ -16,7 +16,6 @@ def find_best_model(**kwargs):
     lrs = kwargs['init_learning_rates']
     models = kwargs['models']
     interestings = kwargs['interestings']
-    output = kwargs['output']
     past_hours = kwargs['past_hours']
     train_list = kwargs['train_list']
     test_list = kwargs['test_list']

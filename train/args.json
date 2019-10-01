@@ -16,8 +16,5 @@
         "강수량(mm)": "preprocessing.convert.cvt_precipitation",
         "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
     },
-    "output":{
-        "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
-    },
     "past_hours": [1, 2, 3, 4]
 }

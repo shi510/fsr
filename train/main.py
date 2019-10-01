@@ -21,7 +21,6 @@ if __name__ == '__main__':
         init_learning_rates=[1e-4],
         epoch=args['epoch'],
         interestings=args['interestings'],
-        output=args['output'],
         past_hours=args['past_hours'],
         ablation_report=True,
         train_list=args['train_list'],
