@@ -32,8 +32,8 @@ class Dataset:
 
 class DatasetWithParam:
     
-    def __init__(self, file, interestings, past_hour, past_pair, batch_size):
-        x, y = self._prepare_data(file, interestings, past_hour, past_pair)
+    def __init__(self, file, interestings, future_hour, past_hour, past_pair, batch_size):
+        x, y = self._prepare_data(file, interestings, future_hour, past_hour, past_pair)
         self.num_features = len(x[0])
         self.num_samples = len(x)
         self.ds = tf.data.Dataset.from_tensor_slices((x, y))
@@ -48,10 +48,10 @@ class DatasetWithParam:
     def __call__(self):
         return self.ds
 
-    def _prepare_data(self, file, interestings, past_hour, past_pair):
+    def _prepare_data(self, file, interestings, future_hour, past_hour, past_pair):
         dict_list = putil.convert_csv2dict_list(file, interestings)
         dict_list = statistic.normalize(dict_list, convert.norm_lambdas)
-        x_, y_ = putil.make_past_pair(dict_list, past_hour, past_pair)
+        x_, y_ = putil.make_past_pair(dict_list, future_hour, past_hour, past_pair)
         x = []
         y = []
         for a, b in zip(x_, y_):

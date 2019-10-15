@@ -58,12 +58,12 @@ def convert_csv2dict_list(csv_list, interestings):
         f.close()
     return dict_list
 
-def make_past_pair(dict_list, past_hour, past_pair):
+def make_past_pair(dict_list, future_hour, past_hour, past_pair):
     x = []
     y = []
     input_list = past_pair['input']
     output = past_pair['output']
-    for n in range(past_hour, len(dict_list)):
+    for n in range(past_hour, len(dict_list)-future_hour):
         pair = {}
         
         for name in input_list:
@@ -73,7 +73,7 @@ def make_past_pair(dict_list, past_hour, past_pair):
                     pair[name+str(-p)] = dict_list[n-p][name]
         
         x.append(pair)
-        y.append(dict_list[n][output])
+        y.append(dict_list[n+future_hour][output])
     return x, y
 
 def write_file(name, x, y):

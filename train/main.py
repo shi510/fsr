@@ -23,6 +23,7 @@ if __name__ == '__main__':
         interestings=args['interestings'],
         past_hours=args['past_hours'],
         ablation_report=args['ablation_report'],
+        future_hour=args['future_hour'],
         train_list=args['train_list'],
         test_list=args['test_list'],
         log_dir='logs'

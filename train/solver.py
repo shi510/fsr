@@ -17,6 +17,7 @@ def find_best_model(**kwargs):
     models = kwargs['models']
     interestings = kwargs['interestings']
     past_hours = kwargs['past_hours']
+    future_hour = kwargs['future_hour']
     train_list = kwargs['train_list']
     test_list = kwargs['test_list']
     log_dir = kwargs['log_dir']
@@ -57,6 +58,7 @@ def find_best_model(**kwargs):
             train_ds = input_pipeline.DatasetWithParam(
                 train_list,
                 interestings,
+                future_hour,
                 past_hour,
                 convert.past_pair,
                 batch_size
@@ -64,6 +66,7 @@ def find_best_model(**kwargs):
             test_ds = input_pipeline.DatasetWithParam(
                 test_list,
                 interestings,
+                future_hour,
                 past_hour,
                 convert.past_pair,
                 batch_size
@@ -139,6 +142,7 @@ def find_best_model(**kwargs):
             train_ds = input_pipeline.DatasetWithParam(
                 train_list,
                 interestings,
+                future_hour,
                 past_hour,
                 past_pair,
                 batch_size
@@ -146,6 +150,7 @@ def find_best_model(**kwargs):
             test_ds = input_pipeline.DatasetWithParam(
                 test_list,
                 interestings,
+                future_hour,
                 past_hour,
                 past_pair,
                 batch_size

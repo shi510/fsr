@@ -17,5 +17,6 @@
         "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
     },
     "past_hours": [1, 2, 3, 4]
+    "future_hour": 1,
     "ablation_report": false
 }
