@@ -5,9 +5,9 @@ return [month, day, hour(24)] as type[float, float, float]
 def cvt_date(date):
     sp = date.split(' ')
     m = float(sp[0].split('-')[1])
-    d = float(sp[0].split('-')[2])
+    # d = float(sp[0].split('-')[2])
     h = float(sp[1].split(':')[0])
-    return {'month': m, 'day': d, 'hour': h}
+    return {'month': m, 'hour': h}
 
 def cvt_temperature(tp):
     name = 'temperature'
@@ -35,7 +35,13 @@ def cvt_cloud_cover(cc):
     if '' == cc:
         return {name: 0.0}
     else:
-        return {name: float(cc)}
+        val = float(cc)
+        if(val >= 0 and val < 6):
+            return {name: 0.}
+        elif(val >= 6 and val < 9):
+            return {name: 0.5}
+        else:
+            return {name: 1.}
 
 def cvt_precipitation(pc):
     name = 'precipitation'
@@ -53,12 +59,12 @@ def cvt_radiation(rad):
 
 norm_lambdas = {
     'month': lambda x: x/12,
-    'day': lambda x: x/31,
+    # 'day': lambda x: x/31,
     'hour': lambda x: x/23,
     'temperature': lambda x: (x+12.3)/(37.1+12.3),
     'wind_speed': lambda x: x/16.3,
     'humidity': lambda x: x/100,
-    'cloud_cover': lambda x: x/10,
+    'cloud_cover': lambda x: x,
     'precipitation': lambda x: x/73.5,
     'radiation': lambda x: x/4.6
 }
@@ -66,7 +72,7 @@ norm_lambdas = {
 past_pair = {
     'input': {
         'month': False,
-        'day': False,
+        # 'day': False,
         'hour': False,
         'temperature': True, 
         'wind_speed': True,
