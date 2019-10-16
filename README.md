@@ -61,7 +61,9 @@ Before run the python script, you have to add fsr's absolute path to PYTHONPATH.
 For example, in Windows 10:  
 ```
 1. Open PowerShell in fsr folder.  
-2. Do command, $env:PYTHONPATH=$env:PYTHONPATH+':/path/to/fsr'.  
+2. Do command, 
+   in windows, $env:PYTHONPATH=$pwd
+   in unix-like cmd, export PYTHONPATH=$(pwd) 
 ```
 Then, train your model with below command.  
 ```
