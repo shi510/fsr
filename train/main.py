@@ -4,7 +4,6 @@ import os
 import numpy as np
 import tensorflow as tf
 import common.util as cutil
-import train.util as tutil
 import train.solver
 
 parser = argparse.ArgumentParser()
