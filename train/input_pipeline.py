@@ -1,6 +1,6 @@
 import tensorflow as tf
 import train.util as tutil
-import preprocessing.util as putil
+import common.util as cutil
 import preprocessing.statistic as statistic
 import preprocessing.convert as convert
 
@@ -49,9 +49,9 @@ class DatasetWithParam:
         return self.ds
 
     def _prepare_data(self, file, interestings, future_hour, past_hour, past_pair):
-        dict_list = putil.convert_csv2dict_list(file, interestings)
+        dict_list = cutil.convert_csv2dict_list(file, interestings)
         dict_list = statistic.normalize(dict_list, convert.norm_lambdas)
-        x_, y_ = putil.make_past_pair(dict_list, future_hour, past_hour, past_pair)
+        x_, y_ = cutil.make_past_pair(dict_list, future_hour, past_hour, past_pair)
         x = []
         y = []
         for a, b in zip(x_, y_):

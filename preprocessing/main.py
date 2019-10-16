@@ -18,12 +18,12 @@ if __name__ == '__main__':
     if args.print_statistics:
         for file in cfg['files']:
             print('File: {}'.format(file))
-            dict_list = putil.convert_csv2dict_list(file, cfg['interestings'])
+            dict_list = cutil.convert_csv2dict_list(file, cfg['interestings'])
             statistic.print_statistics(dict_list)
     else:
         for file in cfg['files']:
-            dict_list = putil.convert_csv2dict_list(file, cfg['interestings'])
+            dict_list = cutil.convert_csv2dict_list(file, cfg['interestings'])
             dict_list = statistic.normalize(dict_list, convert.norm_lambdas)
-            x, y = putil.make_past_pair(dict_list, cfg['past_hour'], convert.past_pair)
+            x, y = cutil.make_past_pair(dict_list, cfg['past_hour'], convert.past_pair)
             file_name = os.path.basename(file)
-            putil.write_file('preprocessed_' + file_name, x, y)
+            cutil.write_file('preprocessed_' + file_name, x, y)
