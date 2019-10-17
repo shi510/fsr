@@ -5,29 +5,24 @@ import numpy as np
 import tensorflow as tf
 import common.util as cutil
 import train.solver
+import train.visualize as visual
+import train.util as tutil
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config_file')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    args = cutil.open_config_file(args.config_file)
-
-    best_model = train.solver.find_best_model(
-        batch_sizes=args['batch_sizes'],
-        models=args['models'],
-        optimizers=args['optimizers'],
-        init_learning_rates=args['learning_rates'],
-        epoch=args['epoch'],
-        interestings=args['interestings'],
-        past_hours=args['past_hours'],
-        ablation_report=args['ablation_report'],
-        future_hour=args['future_hour'],
-        train_list=args['train_list'],
-        test_list=args['test_list'],
-        log_dir='logs'
-    )
+    cfg = cutil.open_config_file(args.config_file)
+    cfg['learning_rate']
+    cfg['batch_size']
+    model = tutil.get_model('train.model.model3')(17)
+    best_model = train.solver.train(
+        model, cfg['train_file'], cfg['test_file'], 
+        cfg['learning_rate'], cfg['batch_size'], cfg['epoch'])
 
     with open('best_model.json', 'w') as f:
         f.write(best_model.to_json())
     best_model.save_weights('best_model_weights.h5')
+
+    # visual.draw_graph(best_model, args['test_list'])

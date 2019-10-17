@@ -1,22 +1,11 @@
 {
-    "batch_sizes" : [64, 128, 256],
-    "models" : ["model1", "model2", "model3"],
+    "batch_size" : 2048,
+    "model" : "train.model.model3",
     "loss" : "mse",
-    "optimizers" : ["adam"],
-    "epoch" : 50,
-    "train_list" : "Your Preprocessed train data list.txt",
-    "test_list" : "Your Preprocessed test data list.txt",
-    "learning_rates" : [1e-3],
-    "interestings":{
-        "일시": "preprocessing.convert.cvt_date",
-        "기온(°C)": "preprocessing.convert.cvt_temperature",
-        "풍속(m/s)": "preprocessing.convert.cvt_wind_speed",
-        "습도(%)": "preprocessing.convert.cvt_relative_humidity",
-        "전운량(10분위)": "preprocessing.convert.cvt_cloud_cover",
-        "강수량(mm)": "preprocessing.convert.cvt_precipitation",
-        "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
-    },
-    "past_hours": [1, 2, 3, 4]
-    "future_hour": 1,
+    "optimizer" : "adam",
+    "epoch" : 100,
+    "learning_rate" : 1e-4,
+    "train_file" : "/path/to/your/train.tfrecord",
+    "test_file" : "/path/to/your/test.tfrecord",
     "ablation_report": false
 }
