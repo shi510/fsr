@@ -40,7 +40,7 @@ if __name__ == '__main__':
     if args.tfrecord:
         cfg = cutil.open_config_file(args.cfg)
         for file in cfg['files']:
-            make_tfrecord(file, cfg['interestings'], 1, cfg['past_hour'], convert.past_pair)
+            make_tfrecord(file, cfg['interestings'], cfg['future_hour'], cfg['past_hour'], convert.past_pair)
     if args.print_statistics:
         for file in cfg['files']:
             print('File: {}'.format(file))
