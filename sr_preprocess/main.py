@@ -3,14 +3,14 @@ import math
 import os
 import numpy as np
 import common.util as cutil
-import preprocessing.statistic as statistic
-import preprocessing.convert as convert
+import sr_preprocess.statistic as statistic
+import sr_preprocess.convert as convert
 import tensorflow as tf
 
 parser = argparse.ArgumentParser()
+parser.add_argument('tfrecord')
 parser.add_argument('-cfg')
 parser.add_argument('--print_statistics', type=bool)
-parser.add_argument('tfrecord')
 
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))

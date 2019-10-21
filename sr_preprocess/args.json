@@ -4,13 +4,13 @@
         "Your meteorological csv data file list.txt"
     ],
     "interestings":{
-        "일시": "preprocessing.convert.cvt_date",
-        "기온(°C)": "preprocessing.convert.cvt_temperature",
-        "풍속(m/s)": "preprocessing.convert.cvt_wind_speed",
-        "습도(%)": "preprocessing.convert.cvt_relative_humidity",
-        "전운량(10분위)": "preprocessing.convert.cvt_cloud_cover",
-        "강수량(mm)": "preprocessing.convert.cvt_precipitation",
-        "일사(MJ/m2)": "preprocessing.convert.cvt_radiation"
+        "일시": "sr_preprocess.convert.cvt_date",
+        "기온(°C)": "sr_preprocess.convert.cvt_temperature",
+        "풍속(m/s)": "sr_preprocess.convert.cvt_wind_speed",
+        "습도(%)": "sr_preprocess.convert.cvt_relative_humidity",
+        "전운량(10분위)": "sr_preprocess.convert.cvt_cloud_cover",
+        "강수량(mm)": "sr_preprocess.convert.cvt_precipitation",
+        "일사(MJ/m2)": "sr_preprocess.convert.cvt_radiation"
     },
     "past_hour": 2,
     "future_hour": 1
