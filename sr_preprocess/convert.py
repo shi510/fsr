@@ -21,7 +21,15 @@ def cvt_wind_speed(ws):
     if '' == ws:
         return {name: 0.0}
     else:
-        return {name: float(ws)}
+        val = float(ws)
+        if(val >= 0 and val < 4):
+            return {name: 0.}
+        elif(val >= 4 and val < 9):
+            return {name: 0.3}
+        elif(val >= 9 and val < 14):
+            return {name: 0.7}
+        else:
+            return {name: 1.}
 
 def cvt_relative_humidity(rh):
     name = 'humidity'
