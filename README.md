@@ -50,22 +50,31 @@ region1/test/2018.csv
 region1/test/2019.csv  
 ```
 
-## How To Train Your Forecasting Model  
-```
-1. Clone git project from https://github.com/shi510/fsr.  
-2. Change directory to fsr.  
-3. Modify train/args.json file.  
-   Ex: change train_list's parameter to absolute path of your train.txt .  
-```
+## How To Make TFRecord From Your Train/Test List File  
 Before run the python script, you have to add fsr's absolute path to PYTHONPATH.  
-For example, in Windows 10:  
+For example,  
 ```
-1. Open PowerShell in fsr folder.  
+1. Open terminal in fsr folder.  
 2. Do command, 
-   in windows, $env:PYTHONPATH=$pwd
+   in windows, $env:PYTHONPATH=$pwd  
    in unix-like cmd, export PYTHONPATH=$(pwd) 
 ```
-Then, train your model with below command.  
 ```
-python train/main.py --config_file='train/args.json'.  
+1. Modify sr_preprocess/args.json.  
+    "files" : [  
+      "/path/to/your/region1_train.txt",  
+      "/path/to/your/region1_test.txt"  
+    ],  
+2. Then, try the command below.  
+  python sr_preprocess/main.py tfrecord -cfg sr_preprocess/args.json  
+```
+
+## How To Train Your Forecasting Model  
+```
+1. Modify sr_train/args.json.  
+  "train_file" : "/path/to/your/region1_train.tfrecord",  
+  "test_file" : "/path/to/your/region1_test.tfrecord",  
+    ...  
+2. Then, try the command below.  
+  python sr_train/main.py -cfg='sr_train/args.json'.  
 ```
