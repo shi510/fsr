@@ -14,7 +14,7 @@ parser.add_argument('-cfg')
 if __name__ == '__main__':
     args = parser.parse_args()
     cfg = cutil.open_config_file(args.cfg)
-    model = tutil.get_model('sr_train.model.model3')(17)
+    model = tutil.get_model('sr_train.model.model3')(cfg["input_size"])
     best_model = sr_train.solver.train(
         model, cfg['train_file'], cfg['test_file'], 
         cfg['learning_rate'], cfg['batch_size'], cfg['epoch'])
