@@ -147,12 +147,9 @@ def size_of_input_transform(past_hour):
             accum += size
     return accum
 
-def make_dataset(csv_list, past_hour, future_hour, start, end):
+def _make_day_indexed_table(csv_list):
     root_path = os.path.dirname(csv_list)
     files = cutil.read_lines_from_file(csv_list, root_path, 'utf-8')
-    inputs = []
-    outputs = []
-    table = {}
 
     def day2int(str):
         sp = str.split(' ')
@@ -162,6 +159,7 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
         h = sp[1].split(':')[0]
         return int(y + m + d), int(h)
 
+    table = {}
     for file in files:
         f = open(file, 'r', encoding='euc-kr')
         title = cutil.remove_cr(f.readline()).split(',')
@@ -188,6 +186,13 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
             else:
                 table[day] = {}
         f.close()
+    return table
+
+def make_dataset(csv_list, past_hour, future_hour, start, end):
+    inputs = []
+    outputs = []
+    table = _make_day_indexed_table(csv_list)
+
     for d in table:
         for h in range(start, end + 1):
             input_pack = []
