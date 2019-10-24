@@ -6,6 +6,7 @@ import common.util as cutil
 import sr_preprocess.statistic as statistic
 import sr_preprocess.convert as convert
 import tensorflow as tf
+from common.registry import Registry
 
 parser = argparse.ArgumentParser()
 parser.add_argument('tfrecord')
@@ -15,20 +16,14 @@ parser.add_argument('--print_statistics', type=bool)
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
 
-def make_tfrecord(file, interestings, future_hour, past_hour, past_pair):
-    dict_list = cutil.convert_csv2dict_list(file, interestings)
-    dict_list = statistic.normalize(dict_list, convert.norm_lambdas)
-    x, y = cutil.make_past_pair(
-        dict_list, future_hour, past_hour, past_pair)
+def make_tfrecord(file, interestings, past_hour, future_hour, past_pair):
+    x, y = convert.make_dataset(file, past_hour, future_hour, 5, 21)
     file_name = os.path.splitext(os.path.basename(file))[0]
     tf_file = tf.io.TFRecordWriter(file_name+'.tfrecord')
     for a, b in zip(x, y):
-        features = []
-        for name in a:
-            features.append(a[name])
         feature = {
-            'features': _tf_float_list(features),
-            'radiation': _tf_float_list([b])
+            'features': _tf_float_list(a),
+            'radiation': _tf_float_list(b)
         }
         exam = tf.train.Example(features=tf.train.Features(feature=feature))
         tf_file.write(exam.SerializeToString())
@@ -40,7 +35,9 @@ if __name__ == '__main__':
     if args.tfrecord:
         cfg = cutil.open_config_file(args.cfg)
         for file in cfg['files']:
-            make_tfrecord(file, cfg['interestings'], cfg['future_hour'], cfg['past_hour'], convert.past_pair)
+            make_tfrecord(file, cfg['interestings'], cfg['past_hour'],
+                          cfg['future_hour'], convert.past_pair)
+        print("input size:", convert.size_of_input_transform(cfg["past_hour"]))
     if args.print_statistics:
         for file in cfg['files']:
             print('File: {}'.format(file))
