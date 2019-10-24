@@ -6,17 +6,6 @@ import common.io_register as io_register
 def norm(val, min, max):
     return (val - min) / (max - min)
 
-"""
-date_str: '0000-00-00 00:00'
-return [month, day, hour(24)] as type[float, float, float]
-"""
-def cvt_date(date):
-    sp = date.split(' ')
-    m = float(sp[0].split('-')[1])
-    # d = float(sp[0].split('-')[2])
-    h = float(sp[1].split(':')[0])
-    return {'month': m, 'hour': h}
-
 @io_register.regist_input("일시")
 class CvtDate:
     m_min = 1
@@ -38,13 +27,6 @@ class CvtDate:
     def size():
         return 2
 
-def cvt_temperature(tp):
-    name = 'temperature'
-    if '' == tp:
-        return {name: 0.0}
-    else:
-        return {name: float(tp)}
-
 
 @io_register.regist_input("기온(°C)", past=True)
 class CvtTemp:
@@ -62,22 +44,6 @@ class CvtTemp:
     @staticmethod
     def size():
         return 1
-
-def cvt_wind_speed(ws):
-    name = 'wind_speed'
-    if '' == ws:
-        return {name: 0.0}
-    else:
-        val = float(ws)
-        if(val >= 0 and val < 4):
-            return {name: 0.}
-        elif(val >= 4 and val < 9):
-            return {name: 0.3}
-        elif(val >= 9 and val < 14):
-            return {name: 0.7}
-        else:
-            return {name: 1.}
-
 
 @io_register.regist_input("풍속(m/s)", past=True)
 class CvtWS:
@@ -101,14 +67,6 @@ class CvtWS:
     def size():
         return 1
 
-def cvt_relative_humidity(rh):
-    name = 'humidity'
-    if '' == rh:
-        return {name: 0.0}
-    else:
-        return {name: float(rh)}
-
-
 @io_register.regist_input("습도(%)", past=True)
 class CvtRH:
     min = 0
@@ -124,19 +82,6 @@ class CvtRH:
     @staticmethod
     def size():
         return 1
-
-def cvt_cloud_cover(cc):
-    name = 'cloud_cover'
-    if '' == cc:
-        return {name: 0.0}
-    else:
-        val = float(cc)
-        if(val >= 0 and val < 6):
-            return {name: 0.}
-        elif(val >= 6 and val < 9):
-            return {name: 0.5}
-        else:
-            return {name: 1.}
 
 @io_register.regist_input("전운량(10분위)", past=True)
 class CvtCC:
@@ -158,13 +103,6 @@ class CvtCC:
     def size():
         return 1
 
-def cvt_precipitation(pc):
-    name = 'precipitation'
-    if '' == pc:
-        return {name: 0.0}
-    else:
-        return {name: float(pc)}
-
 @io_register.regist_input("강수량(mm)", past=True)
 class CvtPCT:
     min = 0
@@ -181,13 +119,6 @@ class CvtPCT:
     @staticmethod
     def size():
         return 1
-
-def cvt_radiation(rad):
-    name = 'radiation'
-    if '' == rad:
-        return {name: 0.0}
-    else:
-        return {name: float(rad)}
 
 @io_register.regist_output("일사(MJ/m2)", future=True)
 class CvtRAD:
@@ -289,29 +220,3 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
                 inputs.append(input_pack)
                 outputs.append(output_pack)
     return inputs, outputs
-
-norm_lambdas = {
-    'month': lambda x: x/12,
-    # 'day': lambda x: x/31,
-    'hour': lambda x: x/23,
-    'temperature': lambda x: (x+12.3)/(37.1+12.3),
-    'wind_speed': lambda x: x/16.3,
-    'humidity': lambda x: x/100,
-    'cloud_cover': lambda x: x,
-    'precipitation': lambda x: x/73.5,
-    'radiation': lambda x: x/4.6
-}
-
-past_pair = {
-    'input': {
-        'month': False,
-        # 'day': False,
-        'hour': False,
-        'temperature': True, 
-        'wind_speed': True,
-        'humidity': True,
-        'cloud_cover': True,
-        'precipitation': True
-    },
-    'output': 'radiation'
-}

@@ -16,7 +16,7 @@ parser.add_argument('--print_statistics', type=bool)
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
 
-def make_tfrecord(file, interestings, past_hour, future_hour, past_pair):
+def make_tfrecord(file, past_hour, future_hour):
     x, y = convert.make_dataset(file, past_hour, future_hour, 5, 21)
     file_name = os.path.splitext(os.path.basename(file))[0]
     tf_file = tf.io.TFRecordWriter(file_name+'.tfrecord')
@@ -35,8 +35,7 @@ if __name__ == '__main__':
     if args.tfrecord:
         cfg = cutil.open_config_file(args.cfg)
         for file in cfg['files']:
-            make_tfrecord(file, cfg['interestings'], cfg['past_hour'],
-                          cfg['future_hour'], convert.past_pair)
+            make_tfrecord(file, cfg['past_hour'], cfg['future_hour'])
         print("input size:", convert.size_of_input_transform(cfg["past_hour"]))
     if args.print_statistics:
         for file in cfg['files']:
