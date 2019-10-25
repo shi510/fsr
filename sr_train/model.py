@@ -31,12 +31,12 @@ def model3(num_features):
     output = _res_inception(output, 12)
     output = layers.Flatten()(output)
     output = layers.Dense(128)(output)
-    output = layers.LeakyReLU()(output)
     output = layers.BatchNormalization()(output)
+    output = layers.LeakyReLU()(output)
     output = layers.Dense(64)(output)
     features = output
-    output = layers.LeakyReLU()(output)
     output = layers.BatchNormalization()(output)
+    output = layers.LeakyReLU()(output)
     output = layers.Dense(1, activation='sigmoid', name='output')(output)
     return tf.keras.Model(input, [output, features])
 
