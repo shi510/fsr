@@ -189,8 +189,7 @@ def _make_day_indexed_table(csv_list):
     return table
 
 def make_dataset(csv_list, past_hour, future_hour, start, end):
-    inputs = []
-    outputs = []
+    dataset=[]
     table = _make_day_indexed_table(csv_list)
 
     for d in table:
@@ -222,6 +221,9 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
                     for name in value:
                         output_pack.append(value[name])
             if len(input_pack) > 0 and len(output_pack) > 0:
-                inputs.append(input_pack)
-                outputs.append(output_pack)
-    return inputs, outputs
+                dataset.append({
+                    "date": [int(str(d)+str(h))],
+                    "features": input_pack,
+                    "radiation": output_pack
+                })
+    return dataset

@@ -3,6 +3,7 @@ import tensorflow as tf
 
 def _parse(proto):
     feature_disc = {
+        "date": tf.io.FixedLenFeature([], tf.int64),
         'features': tf.io.FixedLenSequenceFeature([], tf.float32, allow_missing=True),
         'radiation': tf.io.FixedLenFeature([], tf.float32)
     }

@@ -16,14 +16,18 @@ parser.add_argument('--print_statistics', type=bool)
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
 
+def _tf_int64_list(value):
+    return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
+
 def make_tfrecord(file, past_hour, future_hour):
-    x, y = convert.make_dataset(file, past_hour, future_hour, 5, 21)
+    dataset = convert.make_dataset(file, past_hour, future_hour, 5, 21)
     file_name = os.path.splitext(os.path.basename(file))[0]
     tf_file = tf.io.TFRecordWriter(file_name+'.tfrecord')
-    for a, b in zip(x, y):
+    for data in dataset:
         feature = {
-            'features': _tf_float_list(a),
-            'radiation': _tf_float_list(b)
+            "date": _tf_int64_list(data["date"]),
+            'features': _tf_float_list(data["features"]),
+            'radiation': _tf_float_list(data["radiation"])
         }
         exam = tf.train.Example(features=tf.train.Features(feature=feature))
         tf_file.write(exam.SerializeToString())
