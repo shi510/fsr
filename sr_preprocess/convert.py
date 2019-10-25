@@ -14,13 +14,13 @@ class CvtDate:
     h_max = 23
 
     @classmethod
-    def transform(self, date):
+    def transform(cls, date):
         sp = date.split(' ')
         m = float(sp[0].split('-')[1])
         # d = float(sp[0].split('-')[2])
         h = float(sp[1].split(':')[0])
-        m = norm(m, self.m_min, self.m_max)
-        h = norm(h, self.h_min, self.h_max)
+        m = norm(m, cls.m_min, cls.m_max)
+        h = norm(h, cls.h_min, cls.h_max)
         return {'month': m, 'hour': h}
 
     @staticmethod
@@ -34,12 +34,12 @@ class CvtTemp:
     max = 37.1
 
     @classmethod
-    def transform(self, tp):
+    def transform(cls, tp):
         name = 'temperature'
         if '' == tp:
             return {name: 0.0}
         else:
-            return {name: norm(float(tp), self.min, self.max)}
+            return {name: norm(float(tp), cls.min, cls.max)}
 
     @staticmethod
     def size():
@@ -72,12 +72,12 @@ class CvtRH:
     min = 0
     max = 100
     @classmethod
-    def transform(self, rh):
+    def transform(cls, rh):
         name = 'humidity'
         if '' == rh:
             return {name: 0.0}
         else:
-            return {name: norm(float(rh), self.min, self.max)}
+            return {name: norm(float(rh), cls.min, cls.max)}
 
     @staticmethod
     def size():
@@ -109,12 +109,12 @@ class CvtPCT:
     max = 73.5
 
     @classmethod
-    def transform(self, pc):
+    def transform(cls, pc):
         name = 'precipitation'
         if '' == pc:
             return {name: 0.0}
         else:
-            return {name: norm(float(pc), self.min, self.max)}
+            return {name: norm(float(pc), cls.min, cls.max)}
 
     @staticmethod
     def size():
@@ -126,12 +126,12 @@ class CvtRAD:
     max = 4.6
 
     @classmethod
-    def transform(self, rad):
+    def transform(cls, rad):
         name = 'radiation'
         if '' == rad:
             return {name: 0.0}
         else:
-            return {name: norm(float(rad), self.min, self.max)}
+            return {name: norm(float(rad), cls.min, cls.max)}
 
     @staticmethod
     def size():
