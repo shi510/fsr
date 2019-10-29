@@ -1,0 +1,7 @@
+{
+    "sr_tfrecord": "/path/to/your/weather_list.tfrecord",
+    "pv_file": "/path/to/your/pvgen_train_list.txt",
+    "sr_model_cfg": "/path/to/your/radiation_model.json",
+    "sr_model_weights": "/path/to/your/radiation_model.h5",
+    "future_hour": 1
+}
