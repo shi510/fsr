@@ -28,10 +28,10 @@ class CvtDate:
         return 2
 
 
-@io_register.regist_input("기온(°C)", past=True)
+@io_register.regist_input("기온(°C)", past=True, statistic=True)
 class CvtTemp:
-    min = -12.3
-    max = 37.1
+    min = -17.2
+    max = 37.4
 
     @classmethod
     def transform(cls, tp):
@@ -45,7 +45,8 @@ class CvtTemp:
     def size():
         return 1
 
-@io_register.regist_input("풍속(m/s)", past=True)
+
+@io_register.regist_input("풍속(m/s)", past=True, statistic=True)
 class CvtWS:
     @staticmethod
     def transform(ws):
@@ -67,7 +68,8 @@ class CvtWS:
     def size():
         return 1
 
-@io_register.regist_input("습도(%)", past=True)
+
+@io_register.regist_input("습도(%)", past=True, statistic=True)
 class CvtRH:
     min = 0
     max = 100
@@ -83,7 +85,8 @@ class CvtRH:
     def size():
         return 1
 
-@io_register.regist_input("전운량(10분위)", past=True)
+
+@io_register.regist_input("전운량(10분위)", past=True, statistic=True)
 class CvtCC:
     @staticmethod
     def transform(cc):
@@ -103,10 +106,11 @@ class CvtCC:
     def size():
         return 1
 
-@io_register.regist_input("강수량(mm)", past=True)
+
+@io_register.regist_input("강수량(mm)", past=True, statistic=True)
 class CvtPCT:
     min = 0
-    max = 73.5
+    max = 56.5
 
     @classmethod
     def transform(cls, pc):
@@ -120,10 +124,11 @@ class CvtPCT:
     def size():
         return 1
 
-@io_register.regist_output("일사(MJ/m2)", future=True)
+
+@io_register.regist_output("일사(MJ/m2)", future=True, statistic=True)
 class CvtRAD:
     min = 0
-    max = 4.6
+    max = 4.07
 
     @classmethod
     def transform(cls, rad):
