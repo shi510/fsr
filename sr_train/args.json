@@ -1,7 +1,7 @@
 {
     "batch_size" : 2048,
     "input_size": 17,
-    "model" : "train.model.model3",
+    "model" : "sr_train.model.model3",
     "loss" : "mse",
     "optimizer" : "adam",
     "epoch" : 100,
