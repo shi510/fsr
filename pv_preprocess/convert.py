@@ -8,7 +8,8 @@ import numpy as np
 def norm(val, min, max):
     return (val - min) / (max - min)
 
-@io_register.regist_output("pvgen", future=True)
+
+@io_register.regist_output("pvgen", future=True, statistic=True)
 class CvtDate:
     min = 0.
     max = 1870.25

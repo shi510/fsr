@@ -49,5 +49,5 @@ if __name__ == '__main__':
                       cfg['future_hour'])
     if args.cmd == 'show_statistic':
         cfg = cutil.open_config_file(args.cfg)
-        stat = statistic.show_statistic(cfg['pv_file'])
+        stat = statistic.get_statistic(cfg['pv_file'])
         print(stat)
