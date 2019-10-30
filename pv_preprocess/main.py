@@ -3,10 +3,16 @@ import os
 import common.util as cutil
 import pv_preprocess.convert as convert
 import tensorflow as tf
+import pv_preprocess.statistic as statistic
 
 parser = argparse.ArgumentParser()
-parser.add_argument('tfrecord')
-parser.add_argument('-cfg')
+
+sub_parser = parser.add_subparsers(dest='cmd')
+tfrecord_parser = sub_parser.add_parser('tfrecord')
+tfrecord_parser.add_argument('-cfg')
+
+statistic_parser = sub_parser.add_parser('show_statistic')
+statistic_parser.add_argument('-cfg')
 
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
@@ -36,10 +42,12 @@ def load_model(model_path, weights_path):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    if args.tfrecord:
+    if args.cmd == 'tfrecord':
         cfg = cutil.open_config_file(args.cfg)
         sr_model = load_model(cfg["sr_model_cfg"], cfg["sr_model_weights"])
         make_tfrecord(cfg['sr_tfrecord'], cfg['pv_file'], sr_model,
                       cfg['future_hour'])
-        exit()
-        print("input size:", convert.size_of_input_transform(cfg["past_hour"]))
+    if args.cmd == 'show_statistic':
+        cfg = cutil.open_config_file(args.cfg)
+        stat = statistic.show_statistic(cfg['pv_file'])
+        print(stat)

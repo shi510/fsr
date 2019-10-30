@@ -10,13 +10,12 @@ def norm(val, min, max):
 
 @io_register.regist_output("pvgen", future=True)
 class CvtDate:
-    min = 1
-    max = 12
+    min = 0.
+    max = 1870.25
 
     @classmethod
     def transform(cls, pvgen):
         gen = norm(float(pvgen), cls.min, cls.max)
-        gen = float(pvgen)
         return gen
 
     @staticmethod
