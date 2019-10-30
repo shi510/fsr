@@ -9,9 +9,13 @@ import tensorflow as tf
 from common.registry import Registry
 
 parser = argparse.ArgumentParser()
-parser.add_argument('tfrecord')
-parser.add_argument('-cfg')
-parser.add_argument('--print_statistics', type=bool)
+
+sub_parser = parser.add_subparsers(dest='cmd')
+tfrecord_parser = sub_parser.add_parser('tfrecord')
+tfrecord_parser.add_argument('-cfg')
+
+statistic_parser = sub_parser.add_parser('show_statistic')
+statistic_parser.add_argument('-cfg')
 
 def _tf_float_list(value):
     return tf.train.Feature(float_list=tf.train.FloatList(value=value))
@@ -36,13 +40,14 @@ def make_tfrecord(file, past_hour, future_hour):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    if args.tfrecord:
+    if args.cmd == 'tfrecord':
         cfg = cutil.open_config_file(args.cfg)
         for file in cfg['files']:
             make_tfrecord(file, cfg['past_hour'], cfg['future_hour'])
         print("input size:", convert.size_of_input_transform(cfg["past_hour"]))
-    if args.print_statistics:
+    if args.cmd == 'show_statistic':
+        cfg = cutil.open_config_file(args.cfg)
         for file in cfg['files']:
             print('File: {}'.format(file))
-            dict_list = cutil.convert_csv2dict_list(file, cfg['interestings'])
-            statistic.print_statistics(dict_list)
+            stat = statistic.get_statistic(file)
+            print(stat)
