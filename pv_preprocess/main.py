@@ -28,6 +28,7 @@ def make_tfrecord(sr_file, pv_file, sr_model, future_hour):
         }
         exam = tf.train.Example(features=tf.train.Features(feature=feature))
         tf_file.write(exam.SerializeToString())
+    print("input size : ", len(dataset[0]["features"]))
     tf_file.close()
 
 def load_model(model_path, weights_path):
