@@ -81,9 +81,9 @@ def make_dataset(sr_tfrecord, pv_file, sr_model, future_hour):
     pvgen_table = _make_day_indexed_table_for_pvgen(pv_file)
     feat_table = _make_day_indexed_table_for_tfrecord(ds)
     for key in pvgen_table:
-        if key in feat_table:
+        if key-1 in feat_table:
             rad, feat = sr_model(tf.reshape(
-                feat_table[key], (1, len(feat_table[key]))))
+                feat_table[key-1], (1, len(feat_table[key-1]))))
             dataset.append({
                 "features": feat[0].numpy(),
                 "pvgen": [pvgen_table[key]["pvgen"]["value"]]
