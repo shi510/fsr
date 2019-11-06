@@ -5,7 +5,6 @@ import numpy as np
 import tensorflow as tf
 import common.util as cutil
 import sr_train.solver
-import sr_train.visualize as visual
 import sr_train.util as tutil
 
 parser = argparse.ArgumentParser()
