@@ -2,6 +2,7 @@ import os
 from common.registry import Registry
 import common.util as cutil
 import common.io_register as io_register
+import collections
 
 def norm(val, min, max):
     return (val - min) / (max - min)
@@ -21,7 +22,10 @@ class CvtDate:
         h = float(sp[1].split(':')[0])
         m = norm(m, cls.m_min, cls.m_max)
         h = norm(h, cls.h_min, cls.h_max)
-        return {'month': m, 'hour': h}
+        od = collections.OrderedDict()
+        od["month"] = m
+        od["hour"] = h
+        return od
 
     @staticmethod
     def size():
