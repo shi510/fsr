@@ -19,6 +19,10 @@ class CvtDate:
         gen = norm(float(pvgen), cls.min, cls.max)
         return gen
 
+    @classmethod
+    def denorm(cls, norm_pvgen):
+        return norm_pvgen * (cls.max - cls.min) + cls.min
+
     @staticmethod
     def size():
         return 1

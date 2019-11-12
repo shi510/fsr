@@ -142,6 +142,10 @@ class CvtRAD:
         else:
             return {name: norm(float(rad), cls.min, cls.max)}
 
+    @classmethod
+    def denorm(cls, norm_rad):
+        return norm_rad * (cls.max - cls.min) + cls.min
+
     @staticmethod
     def size():
         return 1
