@@ -1,44 +1,48 @@
 import tensorflow as tf
+import tensorflow.keras as keras
 import tensorflow.keras.layers as layers
 
-def model1(num_features):
+def model1(num_features, name="model"):
     input = tf.keras.Input([num_features])
-    output = layers.Dense(256)(input)
-    output = layers.LeakyReLU()(output)
-    output = layers.Dense(64)(output)
-    features = output
-    output = layers.LeakyReLU()(output)
-    output = layers.Dense(1, activation='sigmoid', name='output')(output)
-    return tf.keras.Model(input, [output, features])
-
-def model2(num_features):
-    input = tf.keras.Input([num_features])
-    output = layers.Dense(256)(input)
+    output = layers.Dense(40)(input)
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
-    output = layers.Dense(64)(input)
+    output = layers.Dense(20, name="features")(output)
     features = output
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
     output = layers.Dense(1, activation='sigmoid', name='output')(output)
-    return tf.keras.Model(input, [output, features])
+    return tf.keras.Model(input, [output, features], name=name)
 
-def model3(num_features):
+def model2(num_features, name="model"):
+    input = tf.keras.Input([num_features])
+    output = layers.Dense(15)(input)
+    output = layers.BatchNormalization()(output)
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(15, name="features")(output)
+    features = output
+    output = layers.BatchNormalization()(output)
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(1, activation='sigmoid', name='output')(output)
+    return tf.keras.Model(input, [output, features], name=name)
+
+def model3(num_features, name="model"):
     input = tf.keras.Input((num_features))
     output = layers.Reshape((num_features, 1))(input)
     output = _inception(output, 12)
     output = _res_inception(output, 12)
     output = _res_inception(output, 12)
+    output = _res_inception(output, 12)
     output = layers.Flatten()(output)
-    output = layers.Dense(128)(output)
+    output = layers.Dense(64)(output)
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
-    output = layers.Dense(64)(output)
+    output = layers.Dense(24, name="features")(output)
     features = output
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
     output = layers.Dense(1, activation='sigmoid', name='output')(output)
-    return tf.keras.Model(input, [output, features])
+    return tf.keras.Model(input, [output, features], name=name)
 
 def _inception(x, filters):
     c3 = layers.Conv1D(filters, 3, padding='same')(x)
