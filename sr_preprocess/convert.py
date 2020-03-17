@@ -4,6 +4,7 @@ import common.util as cutil
 import common.io_register as io_register
 import collections
 import math
+import numpy as np
 
 def norm(val, min, max):
     return (val - min) / (max - min)
@@ -260,9 +261,14 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
                     for name in value:
                         output_pack.append(value[name])
             if len(input_pack) > 0 and len(output_pack) > 0:
+                time_size = phour+1
+                data_size = len(input_pack)
+                arr = np.array(input_pack)
+                arr = arr.reshape(data_size//time_size, time_size).transpose()
+                arr = arr.reshape(data_size)
                 dataset.append({
                     "date": [int(str(d)+str(h))],
-                    "features": input_pack,
+                    "features": arr.tolist(),
                     "radiation": output_pack
                 })
     return dataset
