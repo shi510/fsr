@@ -5,7 +5,6 @@ import numpy as np
 import tensorflow as tf
 import common.util as cutil
 import sr_train.solver
-import sr_train.util as tutil
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-cfg')
@@ -13,9 +12,8 @@ parser.add_argument('-cfg')
 if __name__ == '__main__':
     args = parser.parse_args()
     cfg = cutil.open_config_file(args.cfg)
-    model = tutil.get_model(cfg["model"])(cfg["input_size"])
     best_model = sr_train.solver.train(
-        model, cfg['train_file'], cfg['test_file'], 
+        cfg["model"], cfg["input_size"], cfg['train_file'], cfg['test_file'],
         cfg['learning_rate'], cfg['batch_size'], cfg['epoch'])
 
     with open('best_model.json', 'w') as f:
