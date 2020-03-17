@@ -3,14 +3,17 @@ from common.registry import Registry
 import common.util as cutil
 import common.io_register as io_register
 import collections
+import math
 
 def norm(val, min, max):
     return (val - min) / (max - min)
 
-@io_register.regist_input("일시")
+@io_register.regist_input("일시", past = True)
 class CvtDate:
     m_min = 1
     m_max = 12
+    d_min = 1
+    d_max = 31
     h_min = 0
     h_max = 23
 
@@ -18,18 +21,23 @@ class CvtDate:
     def transform(cls, date):
         sp = date.split(' ')
         m = float(sp[0].split('-')[1])
-        # d = float(sp[0].split('-')[2])
+        d = float(sp[0].split('-')[2])
         h = float(sp[1].split(':')[0])
         m = norm(m, cls.m_min, cls.m_max)
+        d = norm(d, cls.d_min, cls.d_max)
         h = norm(h, cls.h_min, cls.h_max)
         od = collections.OrderedDict()
-        od["month"] = m
-        od["hour"] = h
+        od["month1"] = math.sin(m)
+        od["month2"] = math.cos(m)
+        od["day1"] = math.sin(d)
+        od["day2"] = math.cos(d)
+        od["hour1"] = math.sin(h)
+        od["hour2"] = math.cos(h)
         return od
 
     @staticmethod
     def size():
-        return 2
+        return 6
 
 
 @io_register.regist_input("기온(°C)", past=True, statistic=True)
