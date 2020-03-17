@@ -3,7 +3,7 @@ import tensorflow.keras as keras
 import tensorflow.keras.layers as layers
 
 def model1(num_features, name="model"):
-    input = tf.keras.Input([num_features])
+    input = tf.keras.Input(num_features)
     output = layers.Dense(40)(input)
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
@@ -15,7 +15,7 @@ def model1(num_features, name="model"):
     return tf.keras.Model(input, [output, features], name=name)
 
 def model2(num_features, name="model"):
-    input = tf.keras.Input([num_features])
+    input = tf.keras.Input(num_features)
     output = layers.Dense(15)(input)
     output = layers.BatchNormalization()(output)
     output = layers.LeakyReLU()(output)
@@ -27,7 +27,7 @@ def model2(num_features, name="model"):
     return tf.keras.Model(input, [output, features], name=name)
 
 def model3(num_features, name="model"):
-    input = tf.keras.Input((num_features))
+    input = tf.keras.Input(num_features)
     output = layers.Reshape((num_features, 1))(input)
     output = _inception(output, 12)
     output = _res_inception(output, 12)

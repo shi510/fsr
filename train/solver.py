@@ -1,6 +1,6 @@
 import math
 import tensorflow as tf
-import sr_train.util as tutil
+import train.util as tutil
 
 def _parse(x_shape):
     def map_fn(proto):
@@ -10,7 +10,7 @@ def _parse(x_shape):
             'radiation': tf.io.FixedLenFeature([], tf.float32)
         }
         exam = tf.io.parse_single_example(proto, feature_disc)
-        return (tf.reshape(exam['features'], x_shape), exam['radiation'])
+        return tf.reshape(exam['features'], x_shape), exam['radiation']
     return map_fn
 
 def make_dataset(tfrecord_file, batch, input_shape):
