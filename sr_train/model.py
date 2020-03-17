@@ -65,3 +65,14 @@ def _res_inception(x, filters):
     x = _inception(x, filters)
     x = layers.Add()([x, shortcut])
     return x
+
+def model4(num_features):
+    input = tf.keras.Input(num_features)
+    output = layers.LSTM(32)(input)
+    output = layers.Dense(16)(output)
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(16)(output)
+    features = output
+    output = layers.LeakyReLU()(output)
+    output = layers.Dense(1, name='output')(output)
+    return tf.keras.Model(input, [output, features])
