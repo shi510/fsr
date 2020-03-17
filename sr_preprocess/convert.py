@@ -137,6 +137,24 @@ class CvtPCT:
         return 1
 
 
+@io_register.regist_input("적설(cm)", past=True, statistic=True)
+class CvtPCT:
+    min = 0
+    max = 100
+
+    @classmethod
+    def transform(cls, pc):
+        name = 'snow'
+        if '' == pc:
+            return {name: 0.0}
+        else:
+            return {name: norm(float(pc), cls.min, cls.max)}
+
+    @staticmethod
+    def size():
+        return 1
+
+
 @io_register.regist_output("일사(MJ/m2)", future=True, statistic=True)
 class CvtRAD:
     min = 0
