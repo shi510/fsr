@@ -3,8 +3,8 @@ import math
 import os
 import numpy as np
 import common.util as cutil
-import sr_preprocess.statistic as statistic
-import sr_preprocess.convert as convert
+import preprocess.statistic as statistic
+import preprocess.convert as convert
 import tensorflow as tf
 from common.registry import Registry
 
