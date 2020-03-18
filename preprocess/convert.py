@@ -5,40 +5,33 @@ import common.io_register as io_register
 import collections
 import math
 import numpy as np
+import datetime
 
 def norm(val, min, max):
     return (val - min) / (max - min)
 
 @io_register.regist_input("일시", past = True)
 class CvtDate:
-    m_min = 1
-    m_max = 12
-    d_min = 1
-    d_max = 31
-    h_min = 0
-    h_max = 23
 
     @classmethod
     def transform(cls, date):
         sp = date.split(' ')
-        m = float(sp[0].split('-')[1])
-        d = float(sp[0].split('-')[2])
-        h = float(sp[1].split(':')[0])
-        m = norm(m, cls.m_min, cls.m_max)
-        d = norm(d, cls.d_min, cls.d_max)
-        h = norm(h, cls.h_min, cls.h_max)
+        y = int(sp[0].split('-')[0])
+        m = int(sp[0].split('-')[1])
+        d = int(sp[0].split('-')[2])
+        h = int(sp[1].split(':')[0])
+        w = datetime.date(y, m, d).isocalendar()[1]
+        
         od = collections.OrderedDict()
-        od["month1"] = math.sin(m)
-        od["month2"] = math.cos(m)
-        od["day1"] = math.sin(d)
-        od["day2"] = math.cos(d)
-        od["hour1"] = math.sin(h)
-        od["hour2"] = math.cos(h)
+        od["weeks1"] = math.sin(w / 53)
+        od["weeks2"] = math.cos(w / 53)
+        od["hour1"] = math.sin(h / 23)
+        od["hour2"] = math.cos(h / 23)
         return od
 
     @staticmethod
     def size():
-        return 6
+        return 4
 
 
 @io_register.regist_input("기온(°C)", past=True, statistic=True)
