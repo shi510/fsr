@@ -1,4 +1,5 @@
 import math
+import numpy as np
 import tensorflow as tf
 import train.util as tutil
 
@@ -44,3 +45,20 @@ def train(model_name, input_shape, train_file, test_file, lr, batch=2048, epoch=
         callbacks=[early_stop]
     )
     return model
+
+def calc_inputs_weight(model, data_file, shape, batch=512, eps=1e-3):
+    ds = tf.data.TFRecordDataset(data_file)
+    ds = ds.map(_parse(shape))
+    ds = ds.batch(batch, drop_remainder=True)
+    size = np.array(shape).prod()
+    diffs = np.zeros((size))
+    for x, y in ds:
+        for n in range(size):
+            tp = np.reshape(x.numpy().copy(), (-1, size))
+            tn = np.reshape(x.numpy().copy(), (-1, size))
+            tp[:,n] += eps
+            tn[:,n] -= eps
+            fp = model(np.reshape(tp, [-1] + shape))[0]
+            fn = model(np.reshape(tn, [-1] + shape))[0]
+            diffs[n] += np.sum(np.abs((fp-fn)/(2*eps)))
+    return np.array(diffs / np.sum(diffs)).reshape(shape)

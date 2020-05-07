@@ -68,11 +68,11 @@ def _res_inception(x, filters):
 
 def model4(num_features):
     input = tf.keras.Input(num_features)
-    output = layers.LSTM(32)(input)
-    output = layers.Dense(16)(output)
+    output = layers.GRU(48)(input)
+    output = layers.Dense(24)(output)
     output = layers.LeakyReLU()(output)
-    output = layers.Dense(16)(output)
+    output = layers.Dense(12)(output)
     features = output
     output = layers.LeakyReLU()(output)
-    output = layers.Dense(1, name='output')(output)
+    output = layers.Dense(1, activation='sigmoid', name='output')(output)
     return tf.keras.Model(input, [output, features])

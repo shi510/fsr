@@ -61,12 +61,14 @@ class CvtWS:
             return {name: 0.0}
         else:
             val = float(ws)
-            if(val >= 0 and val < 4):
-                return {name: 0.}
+            if(val == 0):
+                return {name: 0}
+            elif(val > 0 and val < 4):
+                return {name: 0.25}
             elif(val >= 4 and val < 9):
-                return {name: 0.3}
+                return {name: 0.5}
             elif(val >= 9 and val < 14):
-                return {name: 0.7}
+                return {name: 0.75}
             else:
                 return {name: 1.}
 
@@ -101,10 +103,12 @@ class CvtCC:
             return {name: 0.0}
         else:
             val = float(cc)
-            if(val >= 0 and val < 6):
-                return {name: 0.}
+            if(val == 0):
+                return {name: 0}
+            elif(val > 0 and val < 6):
+                return {name: 0.3}
             elif(val >= 6 and val < 9):
-                return {name: 0.5}
+                return {name: 0.6}
             else:
                 return {name: 1.}
 
@@ -143,6 +147,42 @@ class CvtPCT:
             return {name: 0.0}
         else:
             return {name: norm(float(pc), cls.min, cls.max)}
+
+    @staticmethod
+    def size():
+        return 1
+
+
+# @io_register.regist_input("이슬점온도(°C)", past=True, statistic=True)
+class CvtDew:
+    min = -28.2
+    max = 27.3
+
+    @classmethod
+    def transform(cls, dew):
+        name = 'dew'
+        if '' == dew:
+            return {name: 0.0}
+        else:
+            return {name: norm(float(dew), cls.min, cls.max)}
+
+    @staticmethod
+    def size():
+        return 1
+
+
+# @io_register.regist_input("풍향(16방위)", past=True, statistic=True)
+class CvtWindDir:
+    min = 0
+    max = 360
+
+    @classmethod
+    def transform(cls, wd):
+        name = ''
+        if '' == wd:
+            return {name: 0.0}
+        else:
+            return {name: norm(float(wd), cls.min, cls.max)}
 
     @staticmethod
     def size():
@@ -224,10 +264,16 @@ def _make_day_indexed_table(csv_list):
 def make_dataset(csv_list, past_hour, future_hour, start, end):
     dataset=[]
     table = _make_day_indexed_table(csv_list)
-
+    time_size = past_hour+1
+    expected_input_size = 0
+    for key in Registry.REGISTRY_LIST:
+        fn = Registry.REGISTRY_LIST[key]["fn"]
+        io_type = Registry.REGISTRY_LIST[key]["io_type"]
+        if io_type == "input":
+            expected_input_size += fn.size() * time_size
     for d in table:
         for h in range(start, end + 1):
-            input_pack = []
+            input_pack = {}
             output_pack = []
             for key in Registry.REGISTRY_LIST:
                 fn = Registry.REGISTRY_LIST[key]["fn"]
@@ -241,7 +287,10 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
                         for n in range(h, h-phour-1, -1):
                             value = fn.transform(table[d][n][key]["value"])
                             for name in value:
-                                input_pack.append(value[name])
+                                if key in input_pack:
+                                    input_pack[key].append(value[name])
+                                else:
+                                    input_pack[key] = [value[name]]
                     except:
                         print("[Warning] Skip: ", d, h)
                         break
@@ -253,15 +302,23 @@ def make_dataset(csv_list, past_hour, future_hour, start, end):
                         break
                     for name in value:
                         output_pack.append(value[name])
-            if len(input_pack) > 0 and len(output_pack) > 0:
-                time_size = phour+1
-                data_size = len(input_pack)
-                arr = np.array(input_pack)
-                arr = arr.reshape(data_size//time_size, time_size).transpose()
-                arr = arr.reshape(data_size)
+            size = 0
+            for key in input_pack:
+                data = input_pack[key]
+                size += len(data)
+            if expected_input_size == size and len(output_pack) > 0:
+                arr = []
+                for t in range(time_size):
+                    for key in input_pack:
+                        fn = Registry.REGISTRY_LIST[key]["fn"]
+                        feat_size = fn.size()
+                        data = input_pack[key]
+                        arr = arr + data[t*feat_size:(t+1)*feat_size]
+                        print(key, t)
+                exit(1)
                 dataset.append({
-                    "date": [int(str(d)+str(h))],
-                    "features": arr.tolist(),
+                    "date": [int(str(d)+str(h).zfill(2))],
+                    "features": arr,
                     "radiation": output_pack
                 })
     return dataset

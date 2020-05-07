@@ -60,21 +60,21 @@ For example,
    in unix-like cmd, export PYTHONPATH=$(pwd) 
 ```
 ```
-1. Modify sr_preprocess/args.json.  
+1. Modify preprocess/args.json.  
     "files" : [  
       "/path/to/your/region1_train.txt",  
       "/path/to/your/region1_test.txt"  
     ],  
 2. Then, try the command below.  
-  python sr_preprocess/main.py tfrecord -cfg sr_preprocess/args.json  
+  python preprocess/main.py tfrecord -cfg preprocess/args.json  
 ```
 
 ## How To Train Your Forecasting Model  
 ```
-1. Modify sr_train/args.json.  
+1. Modify train/args.json.  
   "train_file" : "/path/to/your/region1_train.tfrecord",  
   "test_file" : "/path/to/your/region1_test.tfrecord",  
     ...  
 2. Then, try the command below.  
-  python sr_train/main.py -cfg='sr_train/args.json'.  
+  python train/main.py train -cfg='train/args.json'.  
 ```
