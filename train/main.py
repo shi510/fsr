@@ -10,6 +10,9 @@ parser = argparse.ArgumentParser()
 sub_parser = parser.add_subparsers(dest='cmd')
 train_parser = sub_parser.add_parser('train')
 train_parser.add_argument('-cfg')
+train_parser = sub_parser.add_parser('test')
+train_parser.add_argument('-model')
+train_parser.add_argument('-cfg')
 weights_parser = sub_parser.add_parser('input_weights')
 weights_parser.add_argument('-cfg')
 
@@ -32,6 +35,16 @@ if __name__ == '__main__':
         with open('best_model.json', 'w') as f:
             f.write(best_model.to_json())
         best_model.save_weights('best_model.h5')
+    if args.cmd == 'test':
+        cfg = cutil.open_config_file(args.cfg)
+        best_model = load_model(args.model)
+        test_ds, test_size =  train.solver.make_dataset(cfg['test_file'], 1, cfg['input_size'])
+        for data in test_ds.take(10):
+            input_data = data[0]
+            y_true = data[1]
+            prediction = best_model(input_data)[0]
+            features = best_model(input_data)[1]
+            print(prediction)
     if args.cmd == 'input_weights':
         cfg = cutil.open_config_file(args.cfg)
         best_model = load_model('best_model')
